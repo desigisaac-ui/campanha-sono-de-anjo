@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campanha Sono de Anjo - Lar de Idosos Sol da Justica</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1206 0%, #2d1f0e 50%, #1a1206 100%);
+      color: #f5e6c8;
+      min-height: 100vh;
+    }
+
+    /* ====== HEADER ====== */
+    .hero {
+      background: linear-gradient(180deg, rgba(218,165,32,0.25) 0%, rgba(26,18,6,0) 100%);
+      text-align: center;
+      padding: 40px 20px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%; transform: translateX(-50%);
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,193,37,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-logo {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(218,165,32,0.15);
+      border: 1px solid rgba(218,165,32,0.3);
+      border-radius: 30px;
+      padding: 6px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #e8c96d;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 22px;
+      font-weight: 400;
+      color: #e8c96d;
+      letter-spacing: 1px;
+    }
+    .hero h2 {
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffd700, #e8a317, #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-top: 4px;
+      text-shadow: none;
+    }
+    .hero-sub {
+      font-size: 13px;
+      color: #c4a65a;
+      margin-top: 12px;
+      line-height: 1.5;
+      max-width: 340px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    /* ====== PROGRESS ====== */
+    .progress-section {
+      padding: 0 20px 30px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .progress-card {
+      background: rgba(218,165,32,0.08);
+      border: 1px solid rgba(218,165,32,0.2);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .progress-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 12px;
+    }
+    .progress-label { font-size: 13px; color: #c4a65a; }
+    .progress-value { font-size: 20px; font-weight: 700; color: #ffd700; }
+    .progress-bar-bg {
+      width: 100%; height: 12px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #e8a317, #ffd700);
+      border-radius: 6px;
+      transition: width 0.8s ease;
+      min-width: 2%;
+    }
+    .progress-meta {
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: #a08840;
+      margin-top: 8px;
+    }
+
+    /* ====== TIERS ====== */
+    .tiers-section {
+      padding: 0 16px 30px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: #e8c96d;
+      margin-bottom: 20px;
+    }
+    .tier {
+      background: rgba(218,165,32,0.06);
+      border: 1px solid rgba(218,165,32,0.15);
+      border-radius: 16px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .tier-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .tier-header:hover { background: rgba(218,165,32,0.08); }
+    .tier-price {
+      font-size: 18px; font-weight: 700;
+      color: #ffd700;
+    }
+    .tier-info {
+      font-size: 12px; color: #a08840;
+    }
+    .tier-info .available { color: #6dbe6d; font-weight: 600; }
+    .tier-info .full { color: #e85d5d; font-weight: 600; }
+    .tier-arrow {
+      font-size: 18px; color: #e8c96d;
+      transition: transform 0.3s;
+    }
+    .tier.open .tier-arrow { transform: rotate(180deg); }
+    .tier-numbers {
+      display: none;
+      padding: 8px 14px 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    .tier.open .tier-numbers { display: flex; }
+
+    .num-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(218,165,32,0.4);
+      background: rgba(255,255,255,0.03);
+      color: #e8c96d;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .num-btn:hover:not(.taken):not(.selected) {
+      border-color: #ffd700;
+      background: rgba(218,165,32,0.15);
+      transform: scale(1.1);
+    }
+    .num-btn.selected {
+      border-color: #ffd700;
+      background: linear-gradient(135deg, #e8a317, #ffd700);
+      color: #1a1206;
+      transform: scale(1.1);
+      box-shadow: 0 0 12px rgba(255,215,0,0.4);
+    }
+    .num-btn.taken {
+      border-color: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      color: #665e4a;
+      cursor: not-allowed;
+      position: relative;
+    }
+    .num-btn.taken::after {
+      content: attr(data-donor);
+      position: absolute;
+      bottom: -22px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 8px;
+      color: #8a7a5a;
+      white-space: nowrap;
+      max-width: 60px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ====== SELECTION SUMMARY ====== */
+    .summary-section {
+      padding: 0 16px 30px;
+      max-width: 500px;
+      margin: 0 auto;
+      display: none;
+    }
+    .summary-section.visible { display: block; }
+    .summary-card {
+      background: linear-gradient(135deg, rgba(218,165,32,0.12), rgba(218,165,32,0.06));
+      border: 1px solid rgba(218,165,32,0.25);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .summary-title {
+      font-size: 16px; font-weight: 600;
+      color: #e8c96d;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .summary-list {
+      list-style: none; padding: 0;
+      margin-bottom: 16px;
+    }
+    .summary-list li {
+      display: flex; justify-content: space-between;
+      padding: 6px 0;
+      font-size: 13px;
+      color: #c4a65a;
+      border-bottom: 1px solid rgba(218,165,32,0.1);
+    }
+    .summary-total {
+      display: flex; justify-content: space-between;
+      padding: 10px 0 0;
+      font-size: 16px; font-weight: 700;
+      color: #ffd700;
+    }
+
+    /* ====== NAME INPUT ====== */
+    .name-input-group {
+      margin-top: 16px;
+    }
+    .name-input-group label {
+      display: block;
+      font-size: 13px; color: #c4a65a;
+      margin-bottom: 6px;
+    }
+    .name-input {
+      width: 100%; padding: 12px 16px;
+      border: 2px solid rgba(218,165,32,0.3);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      color: #f5e6c8;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .name-input:focus {
+      border-color: #ffd700;
+    }
+    .name-input::placeholder { color: #665e4a; }
+
+    /* ====== BUTTONS ====== */
+    .btn-primary {
+      display: block; width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #e8a317, #ffd700);
+      color: #1a1206;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px; font-weight: 700;
+      border: none; border-radius: 12px;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,215,0,0.3); }
+    .btn-primary:disabled {
+      opacity: 0.5; cursor: not-allowed;
+      transform: none; box-shadow: none;
+    }
+
+    /* ====== PIX MODAL ====== */
+    .modal-overlay {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      justify-content: center; align-items: center;
+      padding: 20px;
+    }
+    .modal-overlay.visible { display: flex; }
+    .modal {
+      background: linear-gradient(135deg, #2d1f0e, #1a1206);
+      border: 1px solid rgba(218,165,32,0.3);
+      border-radius: 20px;
+      padding: 30px 24px;
+      max-width: 400px; width: 100%;
+      text-align: center;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 12px; right: 16px;
+      background: none; border: none;
+      color: #a08840; font-size: 24px; cursor: pointer;
+    }
+    .modal-icon { font-size: 48px; margin-bottom: 12px; }
+    .modal h3 {
+      font-size: 20px; font-weight: 700; color: #ffd700;
+      margin-bottom: 8px;
+    }
+    .modal p { font-size: 13px; color: #c4a65a; margin-bottom: 20px; line-height: 1.5; }
+    .pix-box {
+      background: rgba(218,165,32,0.1);
+      border: 2px dashed rgba(218,165,32,0.4);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .pix-label { font-size: 11px; color: #a08840; margin-bottom: 6px; }
+    .pix-key {
+      font-size: 20px; font-weight: 700;
+      color: #ffd700;
+      letter-spacing: 1px;
+      word-break: break-all;
+    }
+    .pix-value-label { font-size: 11px; color: #a08840; margin-top: 12px; }
+    .pix-value {
+      font-size: 24px; font-weight: 800;
+      color: #6dbe6d;
+    }
+    .btn-copy {
+      display: block; width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #e8a317, #ffd700);
+      color: #1a1206;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px; font-weight: 700;
+      border: none; border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-copy:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,215,0,0.3); }
+    .btn-copy.copied {
+      background: linear-gradient(135deg, #4a9e4a, #6dbe6d);
+      color: #fff;
+    }
+
+    /* ====== FOOTER ====== */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      color: #665e4a;
+      border-top: 1px solid rgba(218,165,32,0.1);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ====== LOADING ====== */
+    .loading-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(26,18,6,0.95);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      z-index: 2000;
+    }
+    .loading-overlay.hidden { display: none; }
+    .spinner {
+      width: 48px; height: 48px;
+      border: 4px solid rgba(218,165,32,0.2);
+      border-top-color: #ffd700;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #e8c96d;
+    }
+
+    /* ====== ERROR / TOAST ====== */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #2d1f0e;
+      border: 1px solid rgba(218,165,32,0.3);
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 13px; color: #e8c96d;
+      z-index: 3000;
+      transition: transform 0.3s ease;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 380px) {
+      .hero h2 { font-size: 28px; }
+      .num-btn { width: 38px; height: 38px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADING -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Carregando campanha...</div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="hero">
+    <div class="hero-logo">&#127807; Lar de Idosos Sol da Justica</div>
+    <h1>Campanha</h1>
+    <h2>&#127769; Sono de Anjo</h2>
+    <p class="hero-sub">Sua doacao garante noites seguras e confortaveis para nossos idosos. Doe agora e aqueca um sono de anjo!</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-card">
+      <div class="progress-header">
+        <span class="progress-label">Meta: R$ 7.000,00</span>
+        <span class="progress-value" id="progressValue">R$ 0,00</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar" style="width: 2%"></div>
+      </div>
+      <div class="progress-meta">
+        <span id="progressDonors">0 doadores</span>
+        <span id="progressPercent">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIERS -->
+  <div class="tiers-section">
+    <div class="section-title">Escolha seus numeros</div>
+    <div id="tiersContainer"></div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-section" id="summarySection">
+    <div class="summary-card">
+      <div class="summary-title">Sua selecao</div>
+      <ul class="summary-list" id="summaryList"></ul>
+      <div class="summary-total">
+        <span>Total</span>
+        <span id="summaryTotal">R$ 0,00</span>
+      </div>
+      <div class="name-input-group">
+        <label for="donorName">Seu nome completo:</label>
+        <input type="text" class="name-input" id="donorName" placeholder="Digite seu nome aqui..." autocomplete="name">
+      </div>
+      <button class="btn-primary" id="btnConfirm" onclick="confirmarDoacao()">Confirmar Doacao</button>
+    </div>
+  </div>
+
+  <!-- PIX MODAL -->
+  <div class="modal-overlay" id="pixModal">
+    <div class="modal">
+      <button class="modal-close" onclick="fecharModal()">&times;</button>
+      <div class="modal-icon">&#9989;</div>
+      <h3>Doacao Registrada!</h3>
+      <p id="modalMsg">Obrigado! Agora faca o PIX para completar sua doacao.</p>
+      <div class="pix-box">
+        <div class="pix-label">PIX CNPJ</div>
+        <div class="pix-key">55.488.604/0001-10</div>
+        <div class="pix-value-label">Valor total</div>
+        <div class="pix-value" id="modalValue">R$ 0,00</div>
+      </div>
+      <button class="btn-copy" id="btnCopy" onclick="copiarPix()">&#128203; COPIAR CHAVE PIX</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <div class="footer">
+    Campanha Sono de Anjo &bull; Lar de Idosos Sol da Justica<br>
+    CNPJ: 55.488.604/0001-10
+  </div>
+
+<script>
+// ============ CONFIG ============
+// COLE A URL DO WEB APP DO GOOGLE APPS SCRIPT AQUI:
+var WEBAPP_URL = 'COLE_A_URL_DO_WEB_APP_AQUI';
+
+var PIX_KEY = '55.488.604/0001-10';
+var META = 7000;
+
+var TIERS = [
+  { valor: 350, total: 2 },
+  { valor: 200, total: 5 },
+  { valor: 100, total: 15 },
+  { valor: 50,  total: 30 },
+  { valor: 25,  total: 50 },
+  { valor: 20,  total: 52 }
+];
+
+// ============ STATE ============
+var taken = {};      // { "350-1": "Joao", "20-5": "Maria", ... }
+var selected = {};   // { "350-1": true, "20-3": true, ... }
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', function() {
+  renderTiers();
+  carregarDados();
+});
+
+function carregarDados() {
+  if (WEBAPP_URL === 'COLE_A_URL_DO_WEB_APP_AQUI') {
+    document.getElementById('loadingOverlay').classList.add('hidden');
+    showToast('Configure a URL do Web App no codigo!');
+    return;
+  }
+
+  fetch(WEBAPP_URL + '?action=listar')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      taken = {};
+      if (data.doacoes && data.doacoes.length > 0) {
+        data.doacoes.forEach(function(d) {
+          var key = d.faixa + '-' + d.numero;
+          taken[key] = d.nome;
+        });
+      }
+      atualizarUI();
+      document.getElementById('loadingOverlay').classList.add('hidden');
+    })
+    .catch(function(err) {
+      console.error('Erro ao carregar:', err);
+      document.getElementById('loadingOverlay').classList.add('hidden');
+      showToast('Erro ao carregar dados. Recarregue a pagina.');
+    });
+}
+
+// ============ RENDER ============
+function renderTiers() {
+  var container = document.getElementById('tiersContainer');
+  container.innerHTML = '';
+
+  TIERS.forEach(function(tier, idx) {
+    var div = document.createElement('div');
+    div.className = 'tier' + (idx === 0 ? ' open' : '');
+    div.id = 'tier-' + tier.valor;
+
+    var header = document.createElement('div');
+    header.className = 'tier-header';
+    header.onclick = function() { toggleTier(tier.valor); };
+    header.innerHTML =
+      '<div>' +
+        '<span class="tier-price">R$ ' + tier.valor.toFixed(2).replace('.', ',') + '</span>' +
+        '<div class="tier-info"><span id="avail-' + tier.valor + '">' + tier.total + '</span> / ' + tier.total + ' numeros</div>' +
+      '</div>' +
+      '<span class="tier-arrow">&#9660;</span>';
+
+    var nums = document.createElement('div');
+    nums.className = 'tier-numbers';
+    nums.id = 'nums-' + tier.valor;
+
+    for (var i = 1; i <= tier.total; i++) {
+      var btn = document.createElement('button');
+      btn.className = 'num-btn';
+      btn.textContent = i;
+      btn.dataset.tier = tier.valor;
+      btn.dataset.num = i;
+      btn.id = 'btn-' + tier.valor + '-' + i;
+      (function(t, n) {
+        btn.onclick = function() { toggleNumber(t, n); };
+      })(tier.valor, i);
+      nums.appendChild(btn);
+    }
+
+    div.appendChild(header);
+    div.appendChild(nums);
+    container.appendChild(div);
+  });
+}
+
+function atualizarUI() {
+  var totalArrecadado = 0;
+  var totalDoadores = new Set();
+
+  TIERS.forEach(function(tier) {
+    var disponiveis = tier.total;
+    for (var i = 1; i <= tier.total; i++) {
+      var key = tier.valor + '-' + i;
+      var btn = document.getElementById('btn-' + key);
+      if (!btn) continue;
+
+      if (taken[key]) {
+        btn.className = 'num-btn taken';
+        btn.dataset.donor = taken[key].length > 8 ? taken[key].substring(0, 8) + '..' : taken[key];
+        btn.onclick = null;
+        disponiveis--;
+        totalArrecadado += tier.valor;
+        totalDoadores.add(taken[key]);
+      } else if (selected[key]) {
+        btn.className = 'num-btn selected';
+      } else {
+        btn.className = 'num-btn';
+      }
+    }
+
+    var availEl = document.getElementById('avail-' + tier.valor);
+    if (availEl) {
+      availEl.textContent = disponiveis;
+      availEl.className = disponiveis > 0 ? 'available' : 'full';
+    }
+  });
+
+  // Progress
+  var pct = Math.min(100, (totalArrecadado / META) * 100);
+  document.getElementById('progressValue').textContent = formatMoney(totalArrecadado);
+  document.getElementById('progressBar').style.width = Math.max(2, pct) + '%';
+  document.getElementById('progressPercent').textContent = pct.toFixed(0) + '%';
+  document.getElementById('progressDonors').textContent = totalDoadores.size + ' doador' + (totalDoadores.size !== 1 ? 'es' : '');
+
+  atualizarSummary();
+}
+
+// ============ INTERACTIONS ============
+function toggleTier(valor) {
+  var tier = document.getElementById('tier-' + valor);
+  tier.classList.toggle('open');
+}
+
+function toggleNumber(tierValor, num) {
+  var key = tierValor + '-' + num;
+  if (taken[key]) return;
+
+  if (selected[key]) {
+    delete selected[key];
+  } else {
+    selected[key] = true;
+  }
+
+  var btn = document.getElementById('btn-' + key);
+  btn.className = selected[key] ? 'num-btn selected' : 'num-btn';
+  atualizarSummary();
+}
+
+function atualizarSummary() {
+  var keys = Object.keys(selected);
+  var section = document.getElementById('summarySection');
+  var list = document.getElementById('summaryList');
+  var totalEl = document.getElementById('summaryTotal');
+
+  if (keys.length === 0) {
+    section.classList.remove('visible');
+    return;
+  }
+
+  section.classList.add('visible');
+  list.innerHTML = '';
+  var total = 0;
+
+  // Group by tier
+  var grupos = {};
+  keys.forEach(function(k) {
+    var parts = k.split('-');
+    var v = parseInt(parts[0]);
+    var n = parseInt(parts[1]);
+    if (!grupos[v]) grupos[v] = [];
+    grupos[v].push(n);
+    total += v;
+  });
+
+  // Sort tiers descending
+  var tierKeys = Object.keys(grupos).map(Number).sort(function(a, b) { return b - a; });
+  tierKeys.forEach(function(v) {
+    var nums = grupos[v].sort(function(a, b) { return a - b; });
+    var li = document.createElement('li');
+    li.innerHTML =
+      '<span>R$ ' + v.toFixed(2).replace('.', ',') + ' x ' + nums.length + ' (n. ' + nums.join(', ') + ')</span>' +
+      '<span>R$ ' + (v * nums.length).toFixed(2).replace('.', ',') + '</span>';
+    list.appendChild(li);
+  });
+
+  totalEl.textContent = formatMoney(total);
+
+  // Scroll to summary
+  setTimeout(function() {
+    section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+
+// ============ CONFIRM ============
+function confirmarDoacao() {
+  var nome = document.getElementById('donorName').value.trim();
+  if (!nome) {
+    showToast('Por favor, digite seu nome.');
+    document.getElementById('donorName').focus();
+    return;
+  }
+
+  var keys = Object.keys(selected);
+  if (keys.length === 0) {
+    showToast('Selecione ao menos um numero.');
+    return;
+  }
+
+  var btn = document.getElementById('btnConfirm');
+  btn.disabled = true;
+  btn.textContent = 'Registrando...';
+
+  var doacoes = keys.map(function(k) {
+    var parts = k.split('-');
+    return { faixa: parseInt(parts[0]), numero: parseInt(parts[1]), nome: nome };
+  });
+
+  var total = 0;
+  doacoes.forEach(function(d) { total += d.faixa; });
+
+  if (WEBAPP_URL === 'COLE_A_URL_DO_WEB_APP_AQUI') {
+    showToast('Configure a URL do Web App!');
+    btn.disabled = false;
+    btn.textContent = 'Confirmar Doacao';
+    return;
+  }
+
+  fetch(WEBAPP_URL + '?action=registrar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ doacoes: doacoes })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(res) {
+    if (res.status === 'ok') {
+      // Mark as taken locally
+      doacoes.forEach(function(d) {
+        var key = d.faixa + '-' + d.numero;
+        taken[key] = nome;
+        delete selected[key];
+      });
+      atualizarUI();
+      mostrarPix(nome, total);
+    } else if (res.status === 'conflito') {
+      showToast('Alguns numeros ja foram escolhidos! Recarregando...');
+      setTimeout(function() { carregarDados(); }, 1500);
+    } else {
+      showToast('Erro: ' + (res.msg || 'Tente novamente.'));
+    }
+    btn.disabled = false;
+    btn.textContent = 'Confirmar Doacao';
+  })
+  .catch(function(err) {
+    console.error(err);
+    showToast('Erro de conexao. Tente novamente.');
+    btn.disabled = false;
+    btn.textContent = 'Confirmar Doacao';
+  });
+}
+
+// ============ PIX MODAL ============
+function mostrarPix(nome, total) {
+  document.getElementById('modalMsg').textContent =
+    'Obrigado, ' + nome.split(' ')[0] + '! Agora faca o PIX para completar sua doacao.';
+  document.getElementById('modalValue').textContent = formatMoney(total);
+  document.getElementById('btnCopy').textContent = '\uD83D\uDCCB COPIAR CHAVE PIX';
+  document.getElementById('btnCopy').className = 'btn-copy';
+  document.getElementById('pixModal').classList.add('visible');
+}
+
+function fecharModal() {
+  document.getElementById('pixModal').classList.remove('visible');
+}
+
+function copiarPix() {
+  navigator.clipboard.writeText(PIX_KEY).then(function() {
+    var btn = document.getElementById('btnCopy');
+    btn.textContent = '\u2705 CHAVE COPIADA!';
+    btn.className = 'btn-copy copied';
+    showToast('Chave PIX copiada!');
+  }).catch(function() {
+    // Fallback
+    var ta = document.createElement('textarea');
+    ta.value = PIX_KEY;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    var btn = document.getElementById('btnCopy');
+    btn.textContent = '\u2705 CHAVE COPIADA!';
+    btn.className = 'btn-copy copied';
+    showToast('Chave PIX copiada!');
+  });
+}
+
+// ============ HELPERS ============
+function formatMoney(v) {
+  return 'R$ ' + v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.').replace('.', '_').replace('.', ',').replace('_', '.');
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+</script>
+</body>
+</html>
